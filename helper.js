@@ -4,6 +4,7 @@ let userPointFeild = document.querySelector(".human-point .point");
 let mainRpsButton = document.querySelectorAll(".choice button");
 let banner = document.querySelector(".starter");
 let bannerText = document.querySelector(".starter span");
+let gameMovesReflector = document.querySelector(".game-controls .currentMoves span");
 // let rockButton = document.querySelector(".rock");
 // let paperButton = document.querySelector(".paper");
 // let scissorButton = document.querySelector(".scissor");
@@ -43,6 +44,10 @@ const makeProgresion = (winner) =>{
         computerPointFeild.innerHTML = computerPoint;
     }
 }
+//for doing the user vs computer dynamic text
+const showAnimation = (computerMove , userMove) =>{
+    gameMovesReflector.innerHTML =`${computerMove} Vs ${userMove}`;
+}
 const gameOver = () =>{
     console.log("gameOver is called")
     if (userPoint > computerPoint){
@@ -53,6 +58,7 @@ const gameOver = () =>{
     banner.style.display = "grid";
     computerPoint = userPoint = numberMovesDone = 0;
     computerPointFeild.innerHTML = userPointFeild.innerHTML = 0;
+    gameMovesReflector.innerHTML = "";
     started = false;
 }
 //move validation and retrieve who got the point
@@ -62,6 +68,7 @@ const evaluteUserMove = (selection) =>{
         let computerChoice = computerSelection();
         let validator = ( userChoice - computerChoice ) % 3;
         let correctedValidator = validator < 0 ?  validator+3 : validator;
+        showAnimation(numberToString(computerChoice),selection);
         if (correctedValidator == 1) {
             makeProgresion("user")
         }
@@ -73,7 +80,8 @@ const evaluteUserMove = (selection) =>{
         numberMovesDone++;
     };
     if(numberMovesDone == 3){
-        gameOver();
+        setTimeout(()=>{gameOver()},2000)
+        // gameOver();
     };
 }
 //eventlistner for each button
